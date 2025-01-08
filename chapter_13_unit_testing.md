@@ -1,6 +1,6 @@
-## Unit Testing: Code Quality Assurance
+# Unit Testing: Code Quality Assurance
 
-- Ruby's standard unit testing library is **MiniTest**.
+Ruby's standard unit testing library is **MiniTest**.
 
 ---
 
@@ -81,5 +81,36 @@ end
 ```ruby
 assert_raises(ArgumentError) do
     raise ArgumentError, "That didn't work!"
+end
+```
+
+---
+
+## Managing Repetitive Code in Tests
+
+### Using `setup` and `teardown` Methods
+
+1. `setup`: Runs before each test to initialize variables or state.
+2. `teardown`: Runs after each test to clean up.
+
+### Example
+
+```ruby
+class TestSetup < Minitest::Test
+    # Create instance variables
+    def setup
+        @oven = SmallOven.new
+        @oven.turn_on
+    end
+
+    def test_bake
+        @oven.contents = "turkey"
+        assert_equal("golden_brown_turkey", @oven.contents)
+    end
+
+    def test_empty_oven
+        @oven.contents = nil
+        assert_raises(RuntimeError) { @oven.bake }
+    end
 end
 ```
